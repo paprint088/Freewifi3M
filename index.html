@@ -44,7 +44,7 @@
             cursor: pointer;
             width: 100%;
             transition: background-color 0.2s ease;
-            margin-bottom: 25px;
+            margin-bottom: 8px;
             text-decoration: none;
             display: inline-block;
             box-sizing: border-box;
@@ -84,12 +84,6 @@
             font-size: 14px;
             color: #333333;
             line-height: 1.6;
-        }
-
-        .status-note {
-            font-size: 12px;
-            color: #888888;
-            margin: 0;
         }
 
         /* Popup modal */
@@ -139,6 +133,24 @@
         .modal-close-btn:hover {
             background-color: #0056b3;
         }
+
+        .already-connected-btn {
+            background-color: #28a745;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 16px;
+            box-sizing: border-box;
+        }
+
+        .already-connected-btn:hover {
+            background-color: #1e7e34;
+        }
     </style>
 </head>
 <body>
@@ -154,8 +166,6 @@
             Connect to 3M PisoWiFi
         </button>
 
-        <p class="status-note" id="statusNote">Checking connection&hellip;</p>
-
         <!-- Lower Part Note -->
         <p class="lower-note">
             Paid WiFi also available for P1 of 2mins and P5 of 15mins of high speed connection.
@@ -170,15 +180,18 @@
                 <ol>
                     <li>Buksan ang WiFi settings ng inyong device</li>
                     <li>Piliin ang "3M PisoWiFi"</li>
-                    <li>Ibalik dito ang browser</li>
+                    <li>Hintayin lamang bumukas ang Portal upang mailagay ang Voucher Code o Maghulog ng Coins</li>
                 </ol>
             </div>
+            <button class="already-connected-btn" onclick="window.location.href = SHOP_SITE_URL">Already Connected</button>
             <button class="modal-close-btn" onclick="closeInstructions()">OK</button>
         </div>
     </div>
 
     <script>
-        const VOUCHER_URL = "https://paprint088.github.io/paprint/";
+        // This is the shop's website, not a voucher page - the voucher code
+        // itself is entered/required once already connected to 3M PisoWiFi.
+        const SHOP_SITE_URL = "https://paprint088.github.io/paprint/";
 
         function openWifiSettings() {
             // Browsers cannot force-switch a device's WiFi network, and OS deep links
@@ -202,18 +215,18 @@
 
         // Browsers cannot read the connected WiFi SSID directly (no such API
         // exists for privacy/security reasons). As a practical stand-in, we
-        // periodically test for real outbound connectivity; once it succeeds
-        // we treat that as "connected" and continue automatically.
+        // periodically test for real outbound connectivity in the background;
+        // once it succeeds we treat that as "connected" and continue
+        // automatically. The "Already Connected" button in the popup is the
+        // reliable manual fallback if this check doesn't fire.
         function checkConnectivity() {
             const testUrl = "https://www.gstatic.com/generate_204?_=" + Date.now();
             fetch(testUrl, { mode: "no-cors", cache: "no-store" })
                 .then(() => {
-                    document.getElementById("statusNote").textContent = "Connected — redirecting...";
-                    window.location.href = VOUCHER_URL;
+                    window.location.href = SHOP_SITE_URL;
                 })
                 .catch(() => {
-                    document.getElementById("statusNote").textContent =
-                        "Waiting for connection to 3M PisoWiFi...";
+                    // Not connected yet - keep polling silently.
                 });
         }
 
