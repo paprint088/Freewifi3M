@@ -45,6 +45,9 @@
             width: 100%;
             transition: background-color 0.2s ease;
             margin-bottom: 25px;
+            text-decoration: none;
+            display: inline-block;
+            box-sizing: border-box;
         }
 
         .connect-btn:hover {
@@ -58,6 +61,84 @@
             margin: 0;
             line-height: 1.4;
         }
+
+        .instructions {
+            background-color: #f0f6ff;
+            border: 1px solid #cfe2ff;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .instructions p {
+            margin: 0 0 6px 0;
+            font-size: 14px;
+            font-weight: bold;
+            color: #003a8c;
+        }
+
+        .instructions ol {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 14px;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        .status-note {
+            font-size: 12px;
+            color: #888888;
+            margin: 0;
+        }
+
+        /* Popup modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 360px;
+            width: 100%;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            text-align: left;
+        }
+
+        .modal-close-btn {
+            background-color: #007bff;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 16px;
+            box-sizing: border-box;
+        }
+
+        .modal-close-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -68,10 +149,12 @@
             Maaaring mabagal ang data connection dito sa loob. We offer limited time of free WiFi for you to send your files. Ask the counter for the voucher code.
         </p>
 
-        <!-- Connect Button -->
-        <button class="connect-btn" onclick="connectAndRedirect()">
-            Connect to network - 3M PisoWiFi
+        <!-- Connect Button: best-effort attempt to open device WiFi settings + shows instructions -->
+        <button class="connect-btn" onclick="openWifiSettings()">
+            Connect to 3M PisoWiFi
         </button>
+
+        <p class="status-note" id="statusNote">Checking connection&hellip;</p>
 
         <!-- Lower Part Note -->
         <p class="lower-note">
@@ -79,11 +162,63 @@
         </p>
     </div>
 
+    <!-- Instructions popup -->
+    <div class="modal-overlay" id="instructionsModal">
+        <div class="modal-box">
+            <div class="instructions">
+                <p>Paano kumonekta:</p>
+                <ol>
+                    <li>Buksan ang WiFi settings ng inyong device</li>
+                    <li>Piliin ang "3M PisoWiFi"</li>
+                    <li>Ibalik dito ang browser</li>
+                </ol>
+            </div>
+            <button class="modal-close-btn" onclick="closeInstructions()">OK</button>
+        </div>
+    </div>
+
     <script>
-        function connectAndRedirect() {
-            // Redirect to the specified URL when the button is clicked
-            window.location.href = "https://paprint088.github.io/paprint/";
+        const VOUCHER_URL = "https://paprint088.github.io/paprint/";
+
+        function openWifiSettings() {
+            // Browsers cannot force-switch a device's WiFi network, and OS deep links
+            // for opening the settings screen directly are unreliable / unsupported on
+            // most modern devices. This is a best-effort attempt only, so we always
+            // also show the instructions popup as a reliable fallback.
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            if (/android/i.test(userAgent)) {
+                window.location.href = "intent:#Intent;action=android.settings.WIFI_SETTINGS;end";
+            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                window.location.href = "App-Prefs:root=WIFI";
+            }
+
+            document.getElementById("instructionsModal").classList.add("open");
         }
+
+        function closeInstructions() {
+            document.getElementById("instructionsModal").classList.remove("open");
+        }
+
+        // Browsers cannot read the connected WiFi SSID directly (no such API
+        // exists for privacy/security reasons). As a practical stand-in, we
+        // periodically test for real outbound connectivity; once it succeeds
+        // we treat that as "connected" and continue automatically.
+        function checkConnectivity() {
+            const testUrl = "https://www.gstatic.com/generate_204?_=" + Date.now();
+            fetch(testUrl, { mode: "no-cors", cache: "no-store" })
+                .then(() => {
+                    document.getElementById("statusNote").textContent = "Connected — redirecting...";
+                    window.location.href = VOUCHER_URL;
+                })
+                .catch(() => {
+                    document.getElementById("statusNote").textContent =
+                        "Waiting for connection to 3M PisoWiFi...";
+                });
+        }
+
+        checkConnectivity();
+        setInterval(checkConnectivity, 4000);
     </script>
 
 </body>
