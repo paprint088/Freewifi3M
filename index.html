@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi Access</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .upper-note {
+            font-size: 16px;
+            color: #333333;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .connect-btn {
+            background-color: #007bff;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s ease;
+            margin-bottom: 25px;
+        }
+
+        .connect-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .lower-note {
+            font-size: 12px;
+            font-style: italic;
+            color: #666666;
+            margin: 0;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- Upper Part Note -->
+        <p class="upper-note">
+            Maaaring mabagal ang data connection dito sa loob. We offer limited time of free WiFi for you to send your files. Ask the counter for the voucher code.
+        </p>
+
+        <!-- Connect Button -->
+        <button class="connect-btn" onclick="connectAndRedirect()">
+            Connect to network - 3M PisoWiFi
+        </button>
+
+        <!-- Lower Part Note -->
+        <p class="lower-note">
+            Paid WiFi also available for P1 of 2mins and P5 of 15mins of high speed connection.
+        </p>
+    </div>
+
+    <script>
+        function connectAndRedirect() {
+            // Redirect to the specified URL when the button is clicked
+            window.location.href = "https://paprint088.github.io/paprint/";
+        }
+    </script>
+
+</body>
+</html>
