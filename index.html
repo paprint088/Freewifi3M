@@ -213,25 +213,6 @@
             document.getElementById("instructionsModal").classList.remove("open");
         }
 
-        // Browsers cannot read the connected WiFi SSID directly (no such API
-        // exists for privacy/security reasons). As a practical stand-in, we
-        // periodically test for real outbound connectivity in the background;
-        // once it succeeds we treat that as "connected" and continue
-        // automatically. The "Already Connected" button in the popup is the
-        // reliable manual fallback if this check doesn't fire.
-        function checkConnectivity() {
-            const testUrl = "https://www.gstatic.com/generate_204?_=" + Date.now();
-            fetch(testUrl, { mode: "no-cors", cache: "no-store" })
-                .then(() => {
-                    window.location.href = SHOP_SITE_URL;
-                })
-                .catch(() => {
-                    // Not connected yet - keep polling silently.
-                });
-        }
-
-        checkConnectivity();
-        setInterval(checkConnectivity, 4000);
     </script>
 
 </body>
