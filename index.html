@@ -193,7 +193,7 @@
         </p>
 
         <!-- No Thanks Button -->
-        <button class="decline-btn" onclick="closeInstructions()">
+        <button class="decline-btn" onclick="declineWifi()">
             No Thanks. I'll use my Data Connection
         </button>
     </div>
@@ -237,6 +237,10 @@
 
         function closeInstructions() {
             document.getElementById("instructionsModal").classList.remove("open");
+        }
+
+        function declineWifi() {
+            window.location.href = SHOP_SITE_URL;
         }
 
     </script>
