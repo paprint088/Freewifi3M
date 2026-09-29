@@ -54,18 +54,26 @@
             background-color: #0056b3;
         }
 
+        .lower-note {
+            font-size: 12px;
+            font-style: italic;
+            color: #666666;
+            margin: 0;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+
         .decline-btn {
             background-color: #6c757d;
             color: #ffffff;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: bold;
-            padding: 12px 24px;
+            padding: 8px 16px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            width: 100%;
+            width: auto;
             transition: background-color 0.2s ease;
-            margin-bottom: 8px;
             text-decoration: none;
             display: inline-block;
             box-sizing: border-box;
@@ -73,14 +81,6 @@
 
         .decline-btn:hover {
             background-color: #5a6268;
-        }
-
-        .lower-note {
-            font-size: 12px;
-            font-style: italic;
-            color: #666666;
-            margin: 0;
-            line-height: 1.4;
         }
 
         .instructions {
@@ -187,15 +187,15 @@
             Connect to 3M PisoWiFi
         </button>
 
-        <!-- No Thanks Button -->
-        <button class="decline-btn" onclick="closeInstructions()">
-            No Thanks. I'll use my Data Connection
-        </button>
-
         <!-- Lower Part Note -->
         <p class="lower-note">
             Paid WiFi also available for P1 of 2mins and P5 of 15mins of high speed connection.
         </p>
+
+        <!-- No Thanks Button -->
+        <button class="decline-btn" onclick="closeInstructions()">
+            No Thanks. I'll use my Data Connection
+        </button>
     </div>
 
     <!-- Instructions popup -->
