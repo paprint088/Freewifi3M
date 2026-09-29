@@ -151,6 +151,24 @@
         .already-connected-btn:hover {
             background-color: #1e7e34;
         }
+
+        .decline-btn {
+            background-color: #6c757d;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 16px;
+            box-sizing: border-box;
+        }
+
+        .decline-btn:hover {
+            background-color: #5a6268;
+        }
     </style>
 </head>
 <body>
@@ -184,6 +202,7 @@
                 </ol>
             </div>
             <button class="already-connected-btn" onclick="window.location.href = SHOP_SITE_URL">Already Connected</button>
+            <button class="decline-btn" onclick="closeInstructions()">No Thanks. I'll use my Data Connection</button>
             <button class="modal-close-btn" onclick="closeInstructions()">OK</button>
         </div>
     </div>
